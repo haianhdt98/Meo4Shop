@@ -1,3 +1,6 @@
+<?php 
+session_start(); 
+?>
 <!DOCTYPE html>
 <html lang="vi">
 
@@ -112,10 +115,16 @@
            <?php 
         include("../ketnoi.php");
        
-  
-    $id=$_GET["id"];    
+  if (isset($_SESSION['cart'])) {
+    
+    $mySession = $_SESSION['cart'];
+    foreach($mySession as $value => $number)
+      {
+        echo $value;
+        echo $number;
+      
   $tv="SELECT product.`id`, product.`name`, product.`price`, image.`image_link`
-FROM product JOIN image ON product.`id` = image.`product_id` where product.`id`='$id'
+FROM product JOIN image ON product.`id` = image.`product_id` where product.`id`='$number'
  ";
   $tv_1=mysql_query($tv,$conn);
   $tv_2=mysql_fetch_array($tv_1);
@@ -133,7 +142,7 @@ FROM product JOIN image ON product.`id` = image.`product_id` where product.`id`=
             $link_chi_tiet="?thamso=product_detail&id=".$tv_2['id'];
             $gia=$tv_2['price'];
           ;
-            $_GET['id']=$tv_2['id'];
+            $_GET["id"]=$tv_2['id'];
             $gia=number_format($gia,0,",",".");
             echo "<a href='$link_chi_tiet' >";
              
@@ -152,10 +161,11 @@ FROM product JOIN image ON product.`id` = image.`product_id` where product.`id`=
         if($i!=3)
         {
           $tv_2=mysql_fetch_array($tv_1);
-        }
-      
+        }}
   }
 }
+    
+}else echo "<h3>Giỏ hàng chưa có sản phẩm nào</h3>";
   echo "</div>";
  
         ?>
@@ -165,7 +175,7 @@ FROM product JOIN image ON product.`id` = image.`product_id` where product.`id`=
                   <h6 class="text-right">Sản phẩm mới?</h6>
                 </div>
                 <div class="col-xs-3">
-                  <a href="giohang.html">
+                  <a href="giohang.php">
                     <button type="button" class="btn btn-default btn-sm btn-block">
                       Cập nhật giỏ hàng
                     </button>

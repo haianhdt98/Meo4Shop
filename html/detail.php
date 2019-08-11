@@ -1,3 +1,6 @@
+<?php
+session_start(); 
+?>
 <!DOCTYPE html>
 <html lang="vi">
 
@@ -91,7 +94,14 @@
         include("../ketnoi.php");
        
   
-    $id=$_GET["id"];    
+    $id=$_GET["id"];
+    if (isset($_SESSION['cart'])) {
+      $_SESSION['cart'] = array();
+    }
+    
+    $_SESSION['cart']['$count']=$id;
+    $count=count($_SESSION['cart']);
+    echo $count;        
   $tv="SELECT product.`id`, product.`name`, product.`price`, image.`image_link`
 FROM product JOIN image ON product.`id` = image.`product_id` where product.`id`='$id'
  ";
@@ -133,7 +143,8 @@ FROM product JOIN image ON product.`id` = image.`product_id` where product.`id`=
         }
       
   }
-}
+
+ }
   echo "</div>";
  
         ?>
